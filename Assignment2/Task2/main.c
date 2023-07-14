@@ -105,17 +105,17 @@ int main( void )
 	
     /* Create Tasks here */
 	xTaskCreate( 
-								UART1_TaskA													, 
-								"UART1_Task"												,
-								configMINIMAL_STACK_SIZE					,
-								NULL															,
+								UART1_TaskA											, 
+								"UART1_Task"										,
+								configMINIMAL_STACK_SIZE							,
+								NULL												,
 								UART1_TaskA_PRIORITY								,
 								&UART1_TaskA_Handler								);
 	xTaskCreate( 
-								UART2_TaskB													, 
-								"UART2_TaskB"												,
-								configMINIMAL_STACK_SIZE					,
-								NULL															,
+								UART2_TaskB											, 
+								"UART2_TaskB"										,
+								configMINIMAL_STACK_SIZE							,
+								NULL												,
 								UART2_TaskB_PRIORITY								,
 								&UART2_TaskB_Handler								);
 
@@ -187,6 +187,10 @@ void UART1_TaskA( void *pvParameters )
 			}
 			xSemaphoreGive( UART_Semaphore );
 		}
+		else
+		{
+			//nothing
+		}
 		
 		vTaskDelay( 100 );
 	}
@@ -212,6 +216,10 @@ if ( xSemaphoreTake( UART_Semaphore, portMAX_DELAY ) == pdTRUE )
 				}      
 			}
 			xSemaphoreGive( UART_Semaphore );
+		}
+		else
+		{
+			//nothing
 		}
 		vTaskDelay( 500 );		
 	}

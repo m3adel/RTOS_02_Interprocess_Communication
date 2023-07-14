@@ -109,39 +109,41 @@ int main( void )
 
 		EventQueue = xQueueCreate(10, sizeof(const char *));
     /* Create Tasks here */
-		xTaskCreate( 
-								Btn1_Task													, 
-								"Btn1_Task"												,
-								configMINIMAL_STACK_SIZE					,
-								NULL															,
+	xTaskCreate( 
+								Btn1_Task										, 
+								"Btn1_Task"										,
+								configMINIMAL_STACK_SIZE						,
+								NULL											,
 								BTN1_TASK_PRIORITY								,
 								&Btn1_Task_Handler								);
 	
 	xTaskCreate( 
-								Btn2_Task													, 
-								"Btn2_Task"												,
-								configMINIMAL_STACK_SIZE					,
-								NULL															,
+								Btn2_Task										, 
+								"Btn2_Task"										,
+								configMINIMAL_STACK_SIZE						,
+								NULL											,
 								BTN2_TASK_PRIORITY								,
 								&Btn2_Task_Handler								);
 
 
 								 
 								 
-		xTaskCreate( Periodic_Transmitter							,
-								 "PeriodicTransmitter"						,
-								 configMINIMAL_STACK_SIZE					,
-								 NULL															,
-								 UART_TASK_PRIORITY								,
-								 &PeriodicTransmitterHandler			);	
+	xTaskCreate( 
+								Periodic_Transmitter							,
+								"PeriodicTransmitter"							,
+								configMINIMAL_STACK_SIZE						,
+								NULL											,
+								UART_TASK_PRIORITY								,
+								&PeriodicTransmitterHandler						);	
 								 
 								 
-		xTaskCreate( Uart_Receiver										,
-								 "UARTreceiver"										,
-								 configMINIMAL_STACK_SIZE					,
-								 NULL															,
-								 PERIODIC_TASK_PRIORITY						,
-								 &UartReceiverHandler							);
+	xTaskCreate( 
+								Uart_Receiver									,
+								"UARTreceiver"									,
+								configMINIMAL_STACK_SIZE						,
+								NULL											,
+								PERIODIC_TASK_PRIORITY							,
+								&UartReceiverHandler							);
 
 	/* Now all the tasks have been started - start the scheduler.
 
@@ -195,8 +197,6 @@ void Btn1_Task( void *pvParameters )
 {
 		uint8_t u8_PressFlag = pdFALSE;
 		uint8_t ButtonState;
-		TickType_t xLastWakeTime;
-		xLastWakeTime = xTaskGetTickCount();
     for(;;)
 			{
 				ButtonState = GPIO_read(PORT_0,PIN0);  
@@ -212,8 +212,11 @@ void Btn1_Task( void *pvParameters )
             xQueueSend(EventQueue, &eventString, portMAX_DELAY);
 						u8_PressFlag = pdFALSE;
 					}
-				else{}
-					vTaskDelayUntil(&xLastWakeTime,50);
+				else
+				{
+					//do nothin
+				}
+					vTaskDelay(50);
     }
 }
 
@@ -222,8 +225,6 @@ void Btn2_Task( void *pvParameters )
 {
 		uint8_t u8_PressFlag = pdFALSE;
 		uint8_t ButtonState;
-		TickType_t xLastWakeTime;
-		xLastWakeTime = xTaskGetTickCount();
     for(;;)
 			{
 				ButtonState = GPIO_read(PORT_0,PIN1);  
@@ -239,8 +240,11 @@ void Btn2_Task( void *pvParameters )
             xQueueSend(EventQueue, &eventString, portMAX_DELAY);
 						u8_PressFlag = pdFALSE;
 					}
-				else{}
-					vTaskDelayUntil(&xLastWakeTime,50);
+				else
+				{
+					//do nothing
+				}
+				vTaskDelay(50);
     }
 }
 
